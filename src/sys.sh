@@ -3,12 +3,12 @@
 # An 'import' "statement" - a function of a single argument which
 # is the name of a 'module' - the filename w/o '.sh' extension of
 # a shell library. That shell library is looked up in all paths
-# listed in MASH_IMPORT_PATH and sourced if found, othewise
+# listed in POSIXSH_IMPORT_PATH and sourced if found, othewise
 # 'import' exits with a message and rc=5.
 
 _sys__noop 2> /dev/null && return 0 # guard against multiple sourcing
 
-. "$MASH_HOME/lib/logging.sh"
+. "$POSIXSH_HOME/lib/logging.sh"
 
 _name_="$(basename "$0")"
 _path_="$(dirname "$0")"
@@ -162,7 +162,7 @@ _sys__module_already_imported() {
     esac
 }
 
-#: Looks up for a shell module in MASH_IMPORT_PATH and sources it, if found,
+#: Looks up for a shell module in POSIXSH_IMPORT_PATH and sources it, if found,
 #: otherwise prints an error message and exits rc=5. (See the sys.sh header
 #: comment for more details.)
 import() {
@@ -175,7 +175,7 @@ import() {
         return 0
     fi
 
-    if _sys__find_module_in_paths "$MASH_IMPORT_PATH" "$mod_name"; then
+    if _sys__find_module_in_paths "$POSIXSH_IMPORT_PATH" "$mod_name"; then
         _SYS__IMPORTED_MODULES=":$mod_name:$_SYS__IMPORTED_MODULES"
         _debug "import: _SYS_IMPORTED_MODULES=[$_SYS__IMPORTED_MODULES]"
 
@@ -183,8 +183,8 @@ import() {
         # shellcheck disable=2059
         {
             printf "${C_ERROR}IMPORT ERROR: Module ${C_OFF}${C_BOLD}'$mod_name'${C_OFF} ${C_ERROR}"
-            printf "NOT found in MASH_IMPORT_PATH${C_OFF}\n"
-            printf "MASH_IMPORT_PATH='$MASH_IMPORT_PATH'\n"
+            printf "NOT found in POSIXSH_IMPORT_PATH${C_OFF}\n"
+            printf "POSIXSH_IMPORT_PATH='$POSIXSH_IMPORT_PATH'\n"
         }
         exit 5
     fi

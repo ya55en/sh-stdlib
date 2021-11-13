@@ -8,13 +8,13 @@ import sys
 import unittest/assert
 
 setup_mod() {
-    _MASH_IMPORT_PATH_OLD="$MASH_IMPORT_PATH"
+    _POSIXSH_IMPORT_PATH_OLD="$POSIXSH_IMPORT_PATH"
     __test_dir=
 }
 
 teardown_mod() {
-    MASH_IMPORT_PATH="$_MASH_IMPORT_PATH_OLD"
-    unset _MASH_IMPORT_PATH_OLD
+    POSIXSH_IMPORT_PATH="$_POSIXSH_IMPORT_PATH_OLD"
+    unset _POSIXSH_IMPORT_PATH_OLD
     unset __test_dir
 }
 
@@ -23,7 +23,7 @@ setup() {
 }
 
 test_enduse_case_1() {
-    MASH_IMPORT_PATH="$__test_dir/test-data:$__test_dir"
+    POSIXSH_IMPORT_PATH="$__test_dir/test-data:$__test_dir"
     import foorc
     import bar
     import foo-pkg/foo-pkg-bar

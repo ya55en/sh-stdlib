@@ -9,14 +9,14 @@ import string
 import unittest/assert
 
 setup_mod() {
-    _MASH_IMPORT_PATH_OLD="$MASH_IMPORT_PATH"
+    _POSIXSH_IMPORT_PATH_OLD="$POSIXSH_IMPORT_PATH"
     __modules_path=
     __test_dir=
 }
 
 teardown_mod() {
-    MASH_IMPORT_PATH="$_MASH_IMPORT_PATH_OLD"
-    unset _MASH_IMPORT_PATH_OLD
+    POSIXSH_IMPORT_PATH="$_POSIXSH_IMPORT_PATH_OLD"
+    unset _POSIXSH_IMPORT_PATH_OLD
     unset __modules_path
     unset __test_dir
 }
@@ -102,15 +102,15 @@ test__sys__process_path__not_found_case_2() {
 }
 
 test__sys__find_module_in_paths__found() {
-    local mash_path="$__test_dir/test-data:$__test_dir"
-    assert_true _sys__find_module_in_paths "$mash_path" bar
-    assert_true _sys__find_module_in_paths "$mash_path" bar.sh # works as well
-    assert_true _sys__find_module_in_paths "$mash_path" foo-pkg/foo-pkg-bar
+    local posixsh_path="$__test_dir/test-data:$__test_dir"
+    assert_true _sys__find_module_in_paths "$posixsh_path" bar
+    assert_true _sys__find_module_in_paths "$posixsh_path" bar.sh # works as well
+    assert_true _sys__find_module_in_paths "$posixsh_path" foo-pkg/foo-pkg-bar
 }
 
 test__sys__find_module_in_paths__not_found() {
-    local mash_path="$__test_dir/test-data:$__test_dir"
-    assert_false _sys__find_module_in_paths "$mash_path" nonexistent
+    local posixsh_path="$__test_dir/test-data:$__test_dir"
+    assert_false _sys__find_module_in_paths "$posixsh_path" nonexistent
 }
 
 test__sys__module_already_imported__standard_case() {
