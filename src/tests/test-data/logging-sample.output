@@ -1,0 +1,11 @@
+--- Running logging_all_levels()...
+[38;5;160mFATAL:[1m[22m This is a FATAL level message ;)[0;00m
+[38;5;9mE:[1m[22m This is an ERROR level message ;)[0;00m
+[38;5;3mW:[1m[22m This is a WARN level message ;)[0;00m
+[38;5;14mI:[1m[22m This is an INFO level message ;)[0;00m
+!! [38;5;15mThis is a SAY message that appears only on console.[0;00m
+[38;5;6mD:[1m[22m This is a DEBUG level message ;)[0;00m
+--- Running test-logging#logging_level_error()...
+[38;5;160mFATAL:[1m test-logging#logging_level_error:[22m This is a FATAL level message ;)[0;00m
+[38;5;9mE:[1m test-logging#logging_level_error:[22m This is an ERROR level message ;)[0;00m
+!! [38;5;15mThis is a SAY message that appears only on console.[0;00m
