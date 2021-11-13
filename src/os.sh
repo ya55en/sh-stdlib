@@ -1,6 +1,6 @@
 #! /bin/sh
 
-#: os standard module for mashmallow-0 project.
+#: os standard module for sh-stdlib project.
 
 _OS_ARCH=
 _OS_ARCH_SHORT=

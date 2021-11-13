@@ -5,7 +5,7 @@
 #: `teardown_mod`, `setup` and `teardown`. Source the module and
 #: execute all collected methods in proper order.
 
-. "$MASH_HOME/lib/sys.sh"
+. "$POSIX_STDLIB_SH_HOME/lib/sys.sh"
 
 _sht_name_='shtest'
 

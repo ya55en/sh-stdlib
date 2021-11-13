@@ -1,5 +1,5 @@
 #!/bin/sh
-#: Logging library for the mashmallow-0 project.
+#: Logging library for the sh-stdlib project.
 
 #: Features:
 #: Log levels: DEBUG, INFO, NOTE/SAY, WARN, ERROR, FATAL
@@ -13,10 +13,10 @@
 #: See `src/lib/tests/test-logging.sh` for an example.
 
 # Default level if not configured otherwise is INFO
-MASH_LOG_LEVEL=${MASH_LOG_LEVEL:-INFO}
+POSIXSH_LOG_LEVEL=${POSIXSH_LOG_LEVEL:-INFO}
 
 # If DEBUG is set to true - tune the level to DEBUG
-[ "$DEBUG" = true ] && MASH_LOG_LEVEL=DEBUG
+[ "$DEBUG" = true ] && POSIXSH_LOG_LEVEL=DEBUG
 
 # shellcheck disable=2034
 __logging__set_global_vars() {
@@ -41,7 +41,7 @@ __logging__set_global_vars() {
     _LOG_LEVEL_C_10=D
 
     _LOG_CONSOLE=/dev/stdout    # or empty
-    _LOG_FILE=/var/log/mash.log # or empty
+    _LOG_FILE=/var/log/posixsh.log # or empty
 
     _LOG_FORMAT_CONSOLE='${time}${color}${level}:${C_BOLD}${func}${C_BOFF} ${msg}${coff}'
     _LOG_FORMAT_FILE='${time}${level}: ${msg}'
@@ -98,7 +98,7 @@ logging__log() {
 
 __logging__init() {
     __logging__set_global_vars
-    logging__set_level "$MASH_LOG_LEVEL"
+    logging__set_level "$POSIXSH_LOG_LEVEL"
 
     # shellcheck disable=2139
     {
