@@ -1,0 +1,21 @@
+# .gitignore for sh-stdlib
+
+# locally specific
+src/bin
+
+# backups
+*~
+~.bak
+
+# build output
+
+dist/
+build/
+
+# IDEs
+.idea/
+.vscode/
+
+# Local Python  venvs
+venv/
+.venv/

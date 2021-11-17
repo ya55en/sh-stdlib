@@ -1,6 +1,5 @@
 #! /bin/sh
 
-import mashrc
 import unittest/assert
 import os
 
