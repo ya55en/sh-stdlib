@@ -8,7 +8,7 @@
 
 _sys__noop 2> /dev/null && return 0 # guard against multiple sourcing
 
-. "$POSIXSH_HOME/lib/logging.sh"
+. "$POSIXSH_STDLIB_HOME/logging.sh"
 
 _name_="$(basename "$0")"
 _path_="$(dirname "$0")"

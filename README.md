@@ -21,6 +21,27 @@ Currently, we have initial versions of:
 - path
 - unittest
 
+
+## Development
+
+To get your repository code to take effect when you run `shtest`, do:
+
+```bash
+$ eval `make setenv`
+```
+
+(BTW, this will, behind the scenes, create a `src/bin/` directory and place
+a symlink to `shtest` there. This directory will finally end up being added
+to your `PATH`.)
+
+Check that you get the right `shtest` executable:
+
+```bash
+$ which shtest
+/home/{USER}/{WorkDir}/sh-stdlib/src/bin/shtest
+```
+
+
 ## Known issues
 
 Lots of things to do and improve! ;)
