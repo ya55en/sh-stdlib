@@ -1,0 +1,25 @@
+test_method_1() {
+    if [ -d "/home" ]; then
+        echo "yep home"
+    fi
+}
+
+test_number_2() {
+    echo "just some dummy code"
+}
+
+setup_mod() {
+    echo "setup_mod method is present"
+}
+
+teardown_mod() {
+    echo "teardown_mod method is present"
+}
+
+setup() {
+    echo "setup method is present"
+}
+
+teardown() {
+    echo "teardown method is present"
+}

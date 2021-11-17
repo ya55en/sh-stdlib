@@ -1,0 +1,9 @@
+test_some_random_test() {
+    local some_var
+    echo "this is dummy code"
+}
+
+test_second_test() {
+    test_some_random_test
+    ehco "still dummy code"
+}
