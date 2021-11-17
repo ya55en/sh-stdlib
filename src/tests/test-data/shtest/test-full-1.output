@@ -1,0 +1,5 @@
+(1) path=src/tests/test-data/shtest/test-full/test-full-1.sh
+COLLECTED: :src/tests/test-data/shtest/test-full/test-full-1.sh
+RUN [src/tests/test-data/shtest/test-full/test-full-1.sh]
+ok 1 - test_pass: pass
+not ok 2 - test_fail: assert_true FAILED for [false]
