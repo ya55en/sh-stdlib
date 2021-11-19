@@ -103,6 +103,7 @@ main() {
     test_full_2
     test_full_3
     teardown_mod
+    rm -f "$_OUTPUT_TMP_FILE"
 }
 
 main
