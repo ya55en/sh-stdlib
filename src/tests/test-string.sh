@@ -88,11 +88,14 @@ test_contains__standard_cases_positive() {
     assert_true contains 'asd' 's'
     assert_true contains 'asd' 'd'
     assert_true contains 'hi bye' ' '
+    assert_true contains '\\back\\slash\\case' '\\slash'
 }
 
 test_contains__standard_cases_negative() {
     assert_false contains 'hello' 'bye'
     assert_false contains 'hi-bye' ' '
+    assert_false contains '/this/is/a/path/' '/as/'
+    assert_false contains '\\back\\slash\\case' '\\sPlash'
 }
 
 test_contains__corner_cases() {

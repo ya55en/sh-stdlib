@@ -1,22 +1,43 @@
 #!/bin/sh
 
+#: End tests for the `shtest` test collector and executor. These tests
+#: run independently (shtest is not used for execution) and thus rely
+#: on comparing test case output to a predefined expected output, stored
+#: in text files (given in vars _TEST_FULL_X_OUTPUT_PATH below).
+#:
+#: For recreating the expected output files, see
+#: `create_expected_output()` documentation below.
+
 . "$POSIXSH_STDLIB_HOME/sys.sh"
+
 import unittest/assert
 import unittest/shtest
 
-_SHTEST_EXECUTABLE="src/unittest/shtest"
-_OUTPUT_TMP_FILE="/tmp/test-shtest.output"
+_SHTEST_EXECUTABLE='src/unittest/shtest'
+_OUTPUT_TMP_FILE='/tmp/test-shtest.output'
+_SHTEST_SAMPLES_DIR='src/tests/test-data/shtest-samples'
 
-_TEST_MODULE_1_PATH="src/tests/test-data/shtest/module-1"
-_TEST_MODULE_2_PATH="src/tests/test-data/shtest/module-2"
+_TEST_MODULE_1_PATH="$_SHTEST_SAMPLES_DIR/module-1"
+_TEST_MODULE_2_PATH="$_SHTEST_SAMPLES_DIR/module-2"
 
-_TEST_FULL_MODULE_1_PATH="src/tests/test-data/shtest/test-full/test-full-1.sh"
-_TEST_FULL_MODULE_2_PATH="src/tests/test-data/shtest/test-full/test-full-2.sh"
-_TEST_FULL_DIR_PATH="src/tests/test-data/shtest/test-full"
+_TEST_FULL_MODULE_1_PATH="$_SHTEST_SAMPLES_DIR/test-full/test-full-1.sh"
+_TEST_FULL_MODULE_2_PATH="$_SHTEST_SAMPLES_DIR/test-full/test-full-2.sh"
+_TEST_FULL_DIR_PATH="$_SHTEST_SAMPLES_DIR/test-full"
 
-_TEST_FULL_1_OUTPUT_PATH="src/tests/test-data/shtest/test-full-1.output"
-_TEST_FULL_2_OUTPUT_PATH="src/tests/test-data/shtest/test-full-2.output"
-_TEST_FULL_3_OUTPUT_PATH="src/tests/test-data/shtest/test-full-3.output"
+_TEST_FULL_1_OUTPUT_PATH="$_SHTEST_SAMPLES_DIR/test-full-1.output"
+_TEST_FULL_2_OUTPUT_PATH="$_SHTEST_SAMPLES_DIR/test-full-2.output"
+_TEST_FULL_3_OUTPUT_PATH="$_SHTEST_SAMPLES_DIR/test-full-3.output"
+
+#: Create expected output files.  ** NOT USED NORMALLY! **
+#: Will overwrite existing ones -- first make sure that your tests are
+#: outputting what indeed is expected! Then replace (temporarily, then
+#: revert!) the bottom call to `main` with a call to
+# `create_expected_output`.
+create_expected_output() {
+    "$_SHTEST_EXECUTABLE" --with-samples "$_TEST_FULL_MODULE_1_PATH" > "$_TEST_FULL_1_OUTPUT_PATH"
+    "$_SHTEST_EXECUTABLE" --with-samples "$_TEST_FULL_MODULE_2_PATH" -t test_pass > "$_TEST_FULL_2_OUTPUT_PATH"
+    "$_SHTEST_EXECUTABLE" --with-samples "$_TEST_FULL_DIR_PATH" > "$_TEST_FULL_3_OUTPUT_PATH"
+}
 
 _assert_equal() {
     assert_equal "$1" "$2"
@@ -62,7 +83,7 @@ test_parse_module_2() {
 }
 
 test_full_1() {
-    "$_SHTEST_EXECUTABLE" "$_TEST_FULL_MODULE_1_PATH" > "$_OUTPUT_TMP_FILE"
+    "$_SHTEST_EXECUTABLE" --with-samples "$_TEST_FULL_MODULE_1_PATH" > "$_OUTPUT_TMP_FILE"
     assert_true diff -u "$_TEST_FULL_1_OUTPUT_PATH" "$_OUTPUT_TMP_FILE"
     if [ $? -eq 0 ]; then
         echo "ok 3 - test_full_1: pass"
@@ -70,7 +91,7 @@ test_full_1() {
 }
 
 test_full_2() { # TODO: uncomment when new version of shtest (-t functionality) is available
-    "$_SHTEST_EXECUTABLE" "$_TEST_FULL_MODULE_2_PATH" -t test_pass > "$_OUTPUT_TMP_FILE"
+    "$_SHTEST_EXECUTABLE" --with-samples "$_TEST_FULL_MODULE_2_PATH" -t test_pass > "$_OUTPUT_TMP_FILE"
     assert_true diff -u "$_TEST_FULL_2_OUTPUT_PATH" "$_OUTPUT_TMP_FILE"
     if [ $? -eq 0 ]; then
         echo "ok 4 - test_full_2: pass"
@@ -78,7 +99,7 @@ test_full_2() { # TODO: uncomment when new version of shtest (-t functionality) 
 }
 
 test_full_3() {
-    "$_SHTEST_EXECUTABLE" "$_TEST_FULL_DIR_PATH" > "$_OUTPUT_TMP_FILE"
+    "$_SHTEST_EXECUTABLE" --with-samples "$_TEST_FULL_DIR_PATH" > "$_OUTPUT_TMP_FILE"
     assert_true diff -u "$_TEST_FULL_3_OUTPUT_PATH" "$_OUTPUT_TMP_FILE"
     if [ $? -eq 0 ]; then
         echo "ok 5 - test_full_3: pass"
@@ -103,7 +124,6 @@ main() {
     test_full_2
     test_full_3
     teardown_mod
-    rm -f "$_OUTPUT_TMP_FILE"
 }
 
 main
