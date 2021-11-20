@@ -1,14 +1,16 @@
 # .gitignore for sh-stdlib
 
-# locally specific
-src/bin
+# Locally specific:
+# - exclude bin/ (e.g. shtest symlink)
+# - exclude generated version file
+src/bin/
+src/version
 
 # backups
 *~
 ~.bak
 
 # build output
-
 dist/
 build/
 
