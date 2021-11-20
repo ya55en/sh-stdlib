@@ -1,0 +1,34 @@
+---
+#: GitHub actions workflow for sh-stdlib CI
+
+name: sh-stdlib-ci
+
+on:
+  # Suppressing builds on push for now; leaving only chron-based builds.
+
+  push:
+    branches:
+      # any branches (must quote the asterisk)
+      - '*'
+      # $default-branch (must be main) doesn't seem to work
+      - main
+
+jobs:
+  test-sh-stdlib:
+
+    runs-on: ubuntu-latest
+    environment: STAGE
+
+    #env:
+    #  POSIXSH_STDLIB_HOME: ${{ github.workspace }}/src
+    #  POSIXSH_IMPORT_PATH: ${{ github.workspace }}/src:${{ github.workspace }}/src/unittest
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo apt-get update
+      # - run: sudo apt-get upgrade
+      - run: sudo apt-get install -y make curl
+      - run: sudo apt-get clean
+      - run: eval `make setenv` && ./src/tests/make-shtest-endtest.sh | ./bin/tapview
+      - run: eval `make setenv` && TERM=xterm-256color DEBUG=true ./src/unittest/shtest src/tests/
+      - run: eval `make setenv` && TERM=xterm-256color ./src/unittest/shtest src/tests/ | ./bin/tapview
