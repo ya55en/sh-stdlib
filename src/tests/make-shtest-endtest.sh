@@ -18,10 +18,9 @@ _TEST_FULL_1_OUTPUT_PATH="src/tests/test-data/shtest/test-full-1.output"
 _TEST_FULL_2_OUTPUT_PATH="src/tests/test-data/shtest/test-full-2.output"
 _TEST_FULL_3_OUTPUT_PATH="src/tests/test-data/shtest/test-full-3.output"
 
-
 _assert_equal() {
     assert_equal "$1" "$2"
-    status=$((status+$?))
+    status=$((status + $?))
 }
 
 test_parse_module_1() {
@@ -30,6 +29,7 @@ test_parse_module_1() {
     local setup_name=
     local teardown_name=
     local test_methods=
+
     parse_module "$_TEST_MODULE_1_PATH"
     status=0
     _assert_equal "$setup_mod_name" ""
@@ -48,6 +48,7 @@ test_parse_module_2() {
     local setup_name=
     local teardown_name=
     local test_methods=
+
     parse_module "$_TEST_MODULE_2_PATH"
     status=0
     _assert_equal "$setup_mod_name" "setup_mod"
@@ -84,9 +85,24 @@ test_full_3() {
     fi
 }
 
-test_parse_module_1
-test_parse_module_2
-test_full_1
-test_full_2
-test_full_3
-rm -f "$_OUTPUT_TMP_FILE"
+setup_mod() {
+    old_term="$TERM"
+    TERM="xterm"
+}
+
+teardown_mod() {
+    TERM="$old_term"
+    rm -f "$_OUTPUT_TMP_FILE"
+}
+
+main() {
+    setup_mod
+    test_parse_module_1
+    test_parse_module_2
+    test_full_1
+    test_full_2
+    test_full_3
+    teardown_mod
+}
+
+main
