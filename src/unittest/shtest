@@ -8,6 +8,7 @@
 . "$POSIXSH_STDLIB_HOME/sys.sh"
 
 import logging
+import string
 
 _sht_name_='shtest'
 
@@ -119,7 +120,7 @@ $test_modules
 EOS
 
         [ -n "$mod_path" ] && {
-            echo "RUN [$mod_path]"
+            _debug "RUNNING module [$mod_path]"
             run "$mod_path"
         }
     done
@@ -132,6 +133,15 @@ collect() {
         filename="$1"
         [ -e "$filename" ] || die 33 "Path NOT found: $filename"
 
+        _debug "Called:  collect_if_name_matches $filename"
+
+        # YD: a workaround for suppressing `shtest` own tests run by
+        # `make-shtest-endtest.sh`, some of which fail intentionally.
+        if [ "$skip_samples" = YES ] && contains "$filename" '/shtest-samples/'; then
+            _debug "Module excluded, so skipped: $filename"
+            return
+        fi
+
         case "$(basename "$filename")" in
         test-*.sh | test_*.sh)
             test_modules="$test_modules:$filename"
@@ -141,7 +151,15 @@ collect() {
 
     scan_directory() {
         path="$1"
-        printf '(2) scan_directory %s\n' "$path"
+
+        # YD: a workaround for suppressing `shtest` own tests run by
+        # `make-shtest-endtest.sh`, some of which fail intentionally.
+        if [ "$skip_samples" = YES ] && contains "$path" '/shtest-samples/'; then
+            _debug "Directory excluded, so skipped: $path"
+            return
+        fi
+
+        _debug "Called:  scan_directory $path"
 
         # guard against breaking on no glob match below for empty directories
         [ -z "$(ls $path/* 2> /dev/null)" ] && return 0
@@ -154,6 +172,7 @@ collect() {
             fi
         done
     }
+
     local OLD_IFS="$IFS"
     IFS=':'
     local modules_list="$modules"
@@ -165,14 +184,15 @@ EOS
         if [ -z "$path" ]; then
             continue
         fi
-        printf '(1) path=%s\n' "$path"
+        _debug "About to scan or collect: path=$path"
         if [ -d "$path" ]; then
             scan_directory "$path"
         else
             collect_if_name_matches "$path"
         fi
     done
-    printf 'COLLECTED: %s\n' "$test_modules"
+
+    _debug "COLLECTED: $test_modules"
     IFS="$OLD_IFS"
 }
 
@@ -184,7 +204,7 @@ main() {
         cat << EOS
 Unit test runner v 0.0.0 ;)
 USAGE:
-  $ $(basename "$0") TEST-MODULE [TEST-MODULE ...] [-t TEST-CASE]
+  $ $(basename "$0") TEST-MODULE [TEST-MODULE ...] [-t TEST-CASE] [--with-samples]
 
 EOS
         exit 0
@@ -195,20 +215,29 @@ EOS
     local single_method=
     local modules=
 
+    # should skip sample test modules in shtest-samples/ by default:
+    local skip_samples=YES
+
     for ARG in "$@"; do
         if [ "$is_testcase" = 1 ]; then
             single_method="$ARG" # TODO: Support multiple testcases
             is_testcase=0
+
+        elif [ "$ARG" = "--with-samples" ]; then
+            skip_samples=NO
+
         elif [ "$ARG" = "-t" ]; then
             is_testcase=1
+
         elif expr "$ARG" : '-[^t]' > /dev/null; then
             cat << EOS
 Unknown flag: $ARG
 USAGE:
-  $ $(basename "$0") TEST-MODULE [TEST-MODULE ...] [-t TEST-CASE]
+  $ $(basename "$0") TEST-MODULE [TEST-MODULE ...] [-t TEST-CASE] [--with-samples]
 
 EOS
             exit 1
+
         else
             modules="$modules:$ARG"
         fi

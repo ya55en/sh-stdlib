@@ -1,8 +1,0 @@
-(1) path=src/tests/test-data/shtest/test-full/test-full-2.sh
-COLLECTED: :src/tests/test-data/shtest/test-full/test-full-2.sh
-RUN [src/tests/test-data/shtest/test-full/test-full-2.sh]
-setup_mod()
-setup()
-ok 1 - test_pass: pass
-teardown()
-teardown_mod()

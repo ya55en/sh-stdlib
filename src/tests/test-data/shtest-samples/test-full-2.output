@@ -1,0 +1,5 @@
+setup_mod()
+setup()
+ok 1 - test_pass: pass
+teardown()
+teardown_mod()
