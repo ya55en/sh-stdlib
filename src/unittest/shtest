@@ -99,7 +99,13 @@ run() {
 
         $method
 
-        [ "$_curr_test_rc_" -eq 0 ] && print_pass
+        if [ "$_curr_test_rc_" -eq 0 ]; then
+            print_pass
+        else
+            # YD: attempt to count the failed tests and finally
+            # return false if non-zero -- does NOT work (yet).
+            failed_tests=$(( $failed_tests + 1))
+        fi
 
         [ -n "$teardown_name" ] && $teardown_name
     done
@@ -214,6 +220,7 @@ EOS
     local is_testcase=0
     local single_method=
     local modules=
+    local failed_tests=0
 
     # should skip sample test modules in shtest-samples/ by default:
     local skip_samples=YES
@@ -246,6 +253,8 @@ EOS
     local test_modules
     collect "$modules"
     run_many
+    # failed_tests NOT (yet) used -- see comment in run()
+    # return "$failed_tests"
 }
 
 _debug "_name_=[$_name_]  _sht_name_=[$_sht_name_]"
