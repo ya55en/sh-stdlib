@@ -19,6 +19,16 @@ __version__="${1:-$__latest__}" # version passed as an argument for unreleased b
 _SHSTDLIB_FILENAME="sh-stdlib-v${__version__}.tgz"
 _URL_DOWNLOAD="https://github.com/ya55en/sh-stdlib/releases/download/v${__version__}/${_SHSTDLIB_FILENAME}"
 
+#: Terminate execution with given message and rc and.
+die() {
+    rc=$1
+    msg="$2"
+
+    _fatal "$msg" >&2
+    #echo "${C_FATAL}FATAL: $msg${C_OFF}" >&2
+    exit $rc
+}
+
 if [ "$DEBUG" = true ]; then
     echo "DEBUG: HOME='${HOME}'"
     echo "DEBUG: _SHSTDLIB_HOME='${_SHSTDLIB_HOME}'"
