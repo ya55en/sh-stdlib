@@ -208,7 +208,7 @@ main() {
     case "$1" in
     --help | -help | help | -h)
         cat << EOS
-Unit test runner v 0.0.0 ;)
+Unit test runner v 0.0.1 ;)
 USAGE:
   $ $(basename "$0") TEST-MODULE [TEST-MODULE ...] [-t TEST-CASE] [--with-samples]
 
