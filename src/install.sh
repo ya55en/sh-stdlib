@@ -7,7 +7,7 @@ _LOCAL="$HOME/.local"
 _LOCAL_SUBDIRS='bin lib opt share'
 
 # TODO: do we need to honor POSIXSH_STDLIB_HOME here?
-_SHSTDLIB_HOME="${POSIXSH_STDLIB_HOME:-${_LOCAL}/opt/sh-stdlib}"
+_SHSTDLIB_HOME="${POSIXSH_STDLIB_HOME:-${_LOCAL}/lib/shell/sh}"
 
 _DOWNLOAD_CACHE=/tmp
 
@@ -141,8 +141,8 @@ create_bashrcd_script_99_import_path() {
 # ~/.bashrc.d/99-sh-stdlib-import-path.sh - sh-stdlib: set POSIXSH_IMPORT_PATH
 
 # POSIXSH_IMPORT_PATH is necessary for sys.sh 'import()' to work.
-echo "\$POSIXSH_IMPORT_PATH" | grep -q "\$POSIXSH_STDLIB_HOME/etc" || POSIXSH_IMPORT_PATH="\$POSIXSH_STDLIB_HOME/etc:\$POSIXSH_IMPORT_PATH"
-echo "\$POSIXSH_IMPORT_PATH" | grep -q "\$POSIXSH_STDLIB_HOME/lib" || POSIXSH_IMPORT_PATH="\$POSIXSH_STDLIB_HOME/lib:\$POSIXSH_IMPORT_PATH"
+echo "\$POSIXSH_IMPORT_PATH" | grep -q "\$POSIXSH_STDLIB_HOME/lib" || POSIXSH_IMPORT_PATH="\$POSIXSH_STDLIB_HOME:\$POSIXSH_IMPORT_PATH"
+echo "\$POSIXSH_IMPORT_PATH" | grep -q "\$POSIXSH_STDLIB_HOME/lib" || POSIXSH_IMPORT_PATH="\$POSIXSH_STDLIB_HOME/unittest:\$POSIXSH_IMPORT_PATH"
 
 export POSIXSH_IMPORT_PATH
 export PATH
@@ -170,6 +170,10 @@ EOS
     fi
 }
 
+create_symlink() {
+    ln -s "$_SHSTDLIB_HOME/unittest/shtest" "$_LOCAL/bin/shtest"
+}
+
 #: Print adequate instructions on the console.
 instruct_user() {
     cat << EOS
@@ -193,6 +197,7 @@ main() {
     create_bashrcd_script_00
     create_bashrcd_script_99_import_path
     add_bashrcd_sourcing_snippet
+    create_symlink
     instruct_user
 }
 
