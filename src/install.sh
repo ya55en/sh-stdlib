@@ -71,15 +71,15 @@ download_shstdlib_core() {
     fi
 }
 
-#: Install sh-stdlib into $_SHSTDLIB_HOME, creating
-#: $_SHSTDLIB_HOME/{bin,etc,lib,share/recipes}.
+#: Install sh-stdlib into `_SHSTDLIB_HOME`.
 install_shstdlib_core() {
     target_file_path="${_DOWNLOAD_CACHE}/${_SHSTDLIB_FILENAME}"
 
     if [ -e "${_SHSTDLIB_HOME}" ]; then
         echo "Target directory already exists: ${_SHSTDLIB_HOME}, skipping."
+        echo "(If you do want that (old) thing replaced, please remove it manually first.)"
     else
-        echo "Deploying sh-stdlib archive to target directory ${_SHSTDLIB_HOME}..."
+        echo "Extracting sh-stdlib archive $_SHSTDLIB_FILENAME to target directory ${_SHSTDLIB_HOME}..."
         mkdir -p "${_SHSTDLIB_HOME}"
         tar xf "${target_file_path}" -C "${_SHSTDLIB_HOME}"
     fi
@@ -104,17 +104,10 @@ create_bashrcd_script_00() {
     else
         echo "Installing bashrcd script ${target_file_path}..."
         cat > "${target_file_path}" << EOS
-# ~/.bashrc.d/00-sh-stdlib-init.sh - sh-stdlib: initialization: first things first ;)
+# $target_file_path - sh-stdlib environment setup
 
 _LOCAL="\$HOME/.local"
-_LOCAL_SHARE_APPS="\$_LOCAL/share/applications"
-
 echo "\$PATH" | grep -q "\$_LOCAL/bin" || PATH="\$_LOCAL/bin:\$PATH"
-
-# Set XDG_DATA_DIRS, if needed, so it includes user's private share section if it exists.
-# See https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s02.html
-echo "\$XDG_DATA_DIRS" | grep -q "\$_LOCAL_SHARE_APPS" ||
-    XDG_DATA_DIRS="\$_LOCAL_SHARE_APPS:\$XDG_DATA_DIRS"
 
 EOS
         echo "Adding POSIXSH_STDLIB_HOME setup to bashrcd script ${target_file_path}..."
@@ -124,6 +117,12 @@ EOS
 
 POSIXSH_STDLIB_HOME="$_SHSTDLIB_HOME" ; export POSIXSH_STDLIB_HOME
 echo \$PATH | grep -q "\$POSIXSH_STDLIB_HOME/bin" || PATH="\$POSIXSH_STDLIB_HOME/bin:\$PATH"
+
+# sh-stdlib: set POSIXSH_IMPORT_PATH
+# (POSIXSH_IMPORT_PATH is where sys.sh 'import()' look for modules to import.)
+
+echo "\$POSIXSH_IMPORT_PATH" | grep -q "\$POSIXSH_STDLIB_HOME/lib" || POSIXSH_IMPORT_PATH="\$POSIXSH_STDLIB_HOME:\$POSIXSH_IMPORT_PATH"
+echo "\$POSIXSH_IMPORT_PATH" | grep -q "\$POSIXSH_STDLIB_HOME/unittest" || POSIXSH_IMPORT_PATH="\$POSIXSH_STDLIB_HOME/unittest:\$POSIXSH_IMPORT_PATH"
 EOS
 
     fi
@@ -131,22 +130,19 @@ EOS
 
 #: Create bashrcd script ~/.bashrc.d/99-sh-stdlib-import-path.sh.
 create_bashrcd_script_99_import_path() {
-    target_file_path="$HOME/.bashrc.d/99-sh-stdlib-import-path.sh"
+    target_script_name='99-sh-stdlib-import-path.sh'
+    target_file_path="$HOME/.bashrc.d/$target_script_name"
 
     if [ -e "${target_file_path}" ]; then
-        echo "bashrcd script '99-sh-stdlib-import-path.sh' already exists, skipping. (${target_file_path})"
+        echo "bashrcd script '$target_script_name' already exists, skipping."
     else
         echo "Installing bashrcd script ${target_file_path}..."
         cat > "${target_file_path}" << EOS
-# ~/.bashrc.d/99-sh-stdlib-import-path.sh - sh-stdlib: set POSIXSH_IMPORT_PATH
+# $target_file_path - sh-stdlib: export variables set by other scripts.
 
-# POSIXSH_IMPORT_PATH is necessary for sys.sh 'import()' to work.
-echo "\$POSIXSH_IMPORT_PATH" | grep -q "\$POSIXSH_STDLIB_HOME/lib" || POSIXSH_IMPORT_PATH="\$POSIXSH_STDLIB_HOME:\$POSIXSH_IMPORT_PATH"
-echo "\$POSIXSH_IMPORT_PATH" | grep -q "\$POSIXSH_STDLIB_HOME/lib" || POSIXSH_IMPORT_PATH="\$POSIXSH_STDLIB_HOME/unittest:\$POSIXSH_IMPORT_PATH"
-
+export POSIXSH_STDLIB_HOME
 export POSIXSH_IMPORT_PATH
 export PATH
-
 EOS
     fi
 }
@@ -171,21 +167,24 @@ EOS
 }
 
 create_symlink() {
-    ln -s "$_SHSTDLIB_HOME/unittest/shtest" "$_LOCAL/bin/shtest"
+    ln -s "$_SHSTDLIB_HOME/unittest/shtest" "$_LOCAL/lib/shell/sh/bin"
+}
+
+self_test() {
+    # TODO: Provide self-testing command and run it
+    :
 }
 
 #: Print adequate instructions on the console.
 instruct_user() {
+    # TODO: Think on having a refresh-env command to reload env
     cat << EOS
 
-Please close and reopen any shell-based terminals
-in order to refresh your variables.
+IMPORTANT:
+Please ** CLOSE and REOPEN ** all your terminals in order to refresh
+the environment variables.
 
-TODO: ** Instruct user what to do after installation. **
-
-TODO: Think on having a refresh-env command to reload env
-vars from ~/bashrc.d/.
-
+sh-stdlib installation: SUCCESSFUL.
 EOS
 }
 
@@ -198,6 +197,7 @@ main() {
     create_bashrcd_script_99_import_path
     add_bashrcd_sourcing_snippet
     create_symlink
+    self_test
     instruct_user
 }
 

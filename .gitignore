@@ -3,7 +3,7 @@
 # Locally specific:
 # - exclude bin/ (e.g. shtest symlink)
 # - exclude generated version file
-src/bin/
+src/bin/shtest
 src/version
 
 # backups
