@@ -171,8 +171,7 @@ create_symlink() {
 }
 
 self_test() {
-    # TODO: Provide self-testing command and run it
-    :
+    shtest "$_SHSTDLIB_HOME/unittest/shtest" "$_SHSTDLIB_HOME/tests" | "$_SHSTDLIB_HOME/bin/tapview"
 }
 
 #: Print adequate instructions on the console.
