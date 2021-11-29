@@ -10,8 +10,8 @@ _version_ := $(shell ./scripts/dump-version.sh)
 branch := $(shell git branch --no-color --show-current)
 
 # Anything in src/ matters for re-creating the dist tarball (but install.sh)
-EXCLUDED := install.sh
-SOURCES := $(shell find ./src/ -type f -name "*" -a ! -name $(EXCLUDED) -a ! -wholename "src/bin/*")
+# EXCLUDED := install.sh
+SOURCES := $(shell find ./src/ -type f -name "*")  # -a ! -name $(EXCLUDED) -a ! -wholename "src/bin/*")
 DISTFILE := ./dist/sh-stdlib-v$(_version_).tgz
 
 
@@ -21,7 +21,7 @@ $(DISTFILE):  $(SOURCES)
 	@echo $(_version_) > ./src/version
 	@[ -d ./dist/ ] || mkdir -p ./dist
 	@rm -f $(DISTFILE)
-	@tar czvf $(DISTFILE) -C src --exclude=$(EXCLUDED) --exclude='*/bin/*' .
+	@tar czvf $(DISTFILE) -C src . # --exclude=$(EXCLUDED) --exclude='*/bin/*' .
 	@echo "Created $(DISTFILE)."
 
 

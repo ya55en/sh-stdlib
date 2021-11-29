@@ -1,0 +1,32 @@
+
+	@[ -n "$(_version_)" ] || { echo 'FATAL: version _version_ NOT found in git _version_ log'; exit 11; }
+	@echo $(_version_) > ./src/version
+	@[ -d ./dist/ ] || mkdir -p ./dist
+	@rm -f $(DISTFILE)
+	@tar czvf $(DISTFILE) -C src --exclude=$(EXCLUDED) --exclude='*/bin/*' .
+	@echo "Created $(DISTFILE)."
+
+
+TODO:
+
+- Measure (and improve) test coverage
+
+
+DONE:
+- Create release 0.0.1
+- chroot-setup -> 4 testing - try to use it
+- Write an install.sh script which installs and sets up
+  the posix-sh stdlib -- #5 (WIP)
+- Provide CI/CD based on Github actions
+- Make target `dist`
+- Unit level (?) and end tests of `shtest`
+- Write initial version of a README
+- Makefile (spec. `make setenv` for shell evaluation)
+
+
+
+NOTES:
+
+~/Work/posix-sh/ <-- eval `make setenv`
+~/Work/mashmallow-0/ <-- eval `make setenv`
+~/Work/chroot-setup/ <-- eval `make setenv`
