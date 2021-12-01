@@ -215,6 +215,17 @@ USAGE:
 EOS
         exit 0
         ;;
+    --version | -version | version | -v)
+        if [ -e "$POSIXSH_STDLIB_HOME"/version ]
+        then
+            cat "$POSIXSH_STDLIB_HOME"/version
+        else
+            cat << EOS #TODO: Update this
+Unit test runner v 0.0.0 (This is a fake version string)
+EOS
+        fi
+        exit 0
+        ;;
     esac
 
     local is_testcase=0
