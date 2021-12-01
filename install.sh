@@ -170,8 +170,15 @@ create_symlink() {
     ln -s "$_SHSTDLIB_HOME/unittest/shtest" "$_LOCAL/lib/shell/sh/bin"
 }
 
+source_bashrcd_scripts() {
+    . "$HOME/.bashrc.d/00-sh-stdlib-init.sh"
+    . "$HOME/.bashrc.d/99-sh-stdlib-import-path.sh"
+}
+
+
 self_test() {
-    shtest "$_SHSTDLIB_HOME/unittest/shtest" "$_SHSTDLIB_HOME/tests" | "$_SHSTDLIB_HOME/bin/tapview"
+    chmod +x "$_SHSTDLIB_HOME/bin/tapview"
+    "$_SHSTDLIB_HOME/unittest/shtest" "$_SHSTDLIB_HOME/tests" | "$_SHSTDLIB_HOME/bin/tapview"
 }
 
 #: Print adequate instructions on the console.
@@ -195,7 +202,8 @@ main() {
     create_bashrcd_script_00
     create_bashrcd_script_99_import_path
     add_bashrcd_sourcing_snippet
-    create_symlink
+    # create_symlink
+    source_bashrcd_scripts
     self_test
     instruct_user
 }
