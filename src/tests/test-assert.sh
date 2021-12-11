@@ -25,11 +25,28 @@ test_assert_equal__positive() {
     assert_equal 'tata 123' 'tata 123'
 }
 
-test_assert_equal__negative() {
-    assert_equal tata toto 1> /dev/null && print_fail 'assert_equal tata toto DID NOT fail'
-    assert_equal '' toto 1> /dev/null && print_fail 'assert_equal '' toto DID NOT fail'
-    assert_equal tata '' 1> /dev/null && print_fail 'assert_equal tata '' DID NOT fail'
-    assert_equal ' ' '' 1> /dev/null && print_fail 'assert_equal ' ' '' DID NOT fail'
+# TODO: Document expected failure individual test cases
+#test_assert_equal__negative() {
+#    assert_equal tata toto 1> /dev/null && print_fail 'assert_equal tata toto DID NOT fail'
+#    assert_equal '' toto 1> /dev/null && print_fail 'assert_equal '' toto DID NOT fail'
+#    assert_equal tata '' 1> /dev/null && print_fail 'assert_equal tata '' DID NOT fail'
+#    assert_equal ' ' '' 1> /dev/null && print_fail 'assert_equal ' ' '' DID NOT fail'
+#}
+
+test_assert_equal__negative_case_1() {
+    assert_equal tata toto 1> /dev/null && print_fail 'assert_equal tata toto DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_equal__negative_case_2() {
+    assert_equal '' toto 1> /dev/null && print_fail 'assert_equal '' toto DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_equal__negative_case_3() {
+    assert_equal tata '' 1> /dev/null && print_fail 'assert_equal tata '' DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_equal__negative_case_4() {
+    assert_equal ' ' '' 1> /dev/null && print_fail 'assert_equal ' ' '' DID NOT fail' || _curr_test_rc_=0
 }
 
 test_assert_not_equal__positive() {
@@ -39,10 +56,23 @@ test_assert_not_equal__positive() {
     assert_not_equal ' ' ''
 }
 
-test_assert_not_equal__negative() {
-    assert_not_equal tata tata 1> /dev/null && print_fail 'assert_not_equal tata toto DID NOT fail'
-    assert_not_equal 123 123 1> /dev/null && print_fail 'assert_not_equal 123 123 DID NOT fail'
-    assert_not_equal '' '' 1> /dev/null && print_fail 'assert_not_equal '' '' DID NOT fail'
+# TODO: Document expected failure individual test cases
+#test_assert_not_equal__negative() {
+#    assert_not_equal tata tata 1> /dev/null && print_fail 'assert_not_equal tata toto DID NOT fail'
+#    assert_not_equal 123 123 1> /dev/null && print_fail 'assert_not_equal 123 123 DID NOT fail'
+#    assert_not_equal '' '' 1> /dev/null && print_fail 'assert_not_equal '' '' DID NOT fail'
+#}
+
+test_assert_not_equal__negative_case_1() {
+    assert_not_equal tata tata 1> /dev/null && print_fail 'assert_not_equal tata toto DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_not_equal__negative_case_2() {
+    assert_not_equal 123 123 1> /dev/null && print_fail 'assert_not_equal 123 123 DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_not_equal__negative_case_3() {
+    assert_not_equal '' '' 1> /dev/null && print_fail 'assert_not_equal '' '' DID NOT fail' || _curr_test_rc_=0
 }
 
 test_assert_equal_num__positive() {
@@ -57,23 +87,52 @@ test_assert_equal_num__positive() {
     assert_equal_num '123 ' ' 123'
 }
 
-test_assert_equal_num__negative() {
-    # 2> /dev/null
-    assert_equal_num 123 124 1> /dev/null && print_fail 'assert_equal_num 123 124 DID NOT fail'
-    assert_equal_num -1 1 1> /dev/null && print_fail 'assert_equal_num -1 1 DID NOT fail'
-    assert_equal_num 2 2a 1> /dev/null && print_fail 'assert_equal_num 2 2a DID NOT fail'
+# TODO: Document expected failure individual test cases
+#test_assert_equal_num__negative() {
+#    # 2> /dev/null
+#    assert_equal_num 123 124 1> /dev/null && print_fail 'assert_equal_num 123 124 DID NOT fail'
+#    assert_equal_num -1 1 1> /dev/null && print_fail 'assert_equal_num -1 1 DID NOT fail'
+#    assert_equal_num 2 2a 1> /dev/null && print_fail 'assert_equal_num 2 2a DID NOT fail'
+#}
+
+test_assert_equal_num__negative_case_1() {
+    assert_equal_num 123 124 1> /dev/null && print_fail 'assert_equal_num 123 124 DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_equal_num__negative_case_2() {
+    assert_equal_num -1 1 1> /dev/null && print_fail 'assert_equal_num -1 1 DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_equal_num__wrong_arg_type() {
+    assert_equal_num 2 2a 2> /dev/null && print_fail 'assert_equal_num 2 2a DID NOT fail' || _curr_test_rc_=0
 }
 
 test_assert_not_equal_num__positive() {
     assert_not_equal_num 123 124
     assert_not_equal_num 1 -1
-    assert_not_equal_num 1 -1a
 }
 
-test_assert_not_equal_num__negative() {
-    assert_not_equal_num 123 123 1> /dev/null && print_fail 'assert_not_equal_num 123 123 DID NOT fail'
-    assert_not_equal_num 0234 00234 1> /dev/null && print_fail 'assert_not_equal_num 0234 00234 DID NOT fail'
-    assert_not_equal_num '  234 ' 0000234 1> /dev/null && print_fail 'assert_not_equal_num ' 234 ' 0000234 DID NOT fail'
+test_assert_not_equal_num__wrong_arg_type() {
+    assert_not_equal_num 1 -1a 2> /dev/null || _curr_test_rc_=0
+}
+
+# TODO: Document expected failure individual test cases
+#test_assert_not_equal_num__negative() {
+#    assert_not_equal_num 123 123 1> /dev/null && print_fail 'assert_not_equal_num 123 123 DID NOT fail'
+#    assert_not_equal_num 0234 00234 1> /dev/null && print_fail 'assert_not_equal_num 0234 00234 DID NOT fail'
+#    assert_not_equal_num '  234 ' 0000234 1> /dev/null && print_fail 'assert_not_equal_num ' 234 ' 0000234 DID NOT fail'
+#}
+
+test_assert_not_equal_num__negative_case_1() {
+    assert_not_equal_num 123 123 1> /dev/null && print_fail 'assert_not_equal_num 123 123 DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_not_equal_num__negative_case_2() {
+    assert_not_equal_num 0234 00234 1> /dev/null && print_fail 'assert_not_equal_num 0234 00234 DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_not_equal_num__negative_case_3() {
+    assert_not_equal_num '  234 ' 0000234 1> /dev/null && print_fail 'assert_not_equal_num ' 234 ' 0000234 DID NOT fail' || _curr_test_rc_=0
 }
 
 test_assert_true__positive() {
@@ -82,10 +141,23 @@ test_assert_true__positive() {
     assert_true [ abc = abc ]
 }
 
-test_assert_true__negative() {
-    assert_true false 1> /dev/null && print_fail 'assert_true false DID NOT fail'
-    assert_true [ 1 -eq 0 ] 1> /dev/null && print_fail 'assert_true [ 1 -eq 0 ] DID NOT fail'
-    assert_true [ abc = cba ] 1> /dev/null && print_fail 'assert_true [ abc = cba ] DID NOT fail'
+# TODO: Document expected failure individual test cases
+#test_assert_true__negative() {
+#    assert_true false 1> /dev/null && print_fail 'assert_true false DID NOT fail'
+#    assert_true [ 1 -eq 0 ] 1> /dev/null && print_fail 'assert_true [ 1 -eq 0 ] DID NOT fail'
+#    assert_true [ abc = cba ] 1> /dev/null && print_fail 'assert_true [ abc = cba ] DID NOT fail'
+#}
+
+test_assert_true__negative_case_1() {
+    assert_true false 1> /dev/null && print_fail 'assert_true false DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_true__negative_case_2() {
+    assert_true [ 1 -eq 0 ] 1> /dev/null && print_fail 'assert_true [ 1 -eq 0 ] DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_true__negative_case_3() {
+    assert_true [ abc = cba ] 1> /dev/null && print_fail 'assert_true [ abc = cba ] DID NOT fail' || _curr_test_rc_=0
 }
 
 test_assert_true__special_case() {
@@ -102,10 +174,23 @@ test_assert_false__positive() {
     assert_false [ abc = asd ]
 }
 
-test_assert_false__negative() {
-    assert_false true 1> /dev/null && print_fail 'assert_false true DID NOT fail'
-    assert_false [ 3 -eq 3 ] 1> /dev/null && print_fail 'assert_false [ 3 -eq 3 ] DID NOT fail'
-    assert_false [ asd = asd ] 1> /dev/null && print_fail 'assert_false [ asd = asd ] DID NOT fail'
+# TODO: Document expected failure individual test cases
+#test_assert_false__negative() {
+#    assert_false true 1> /dev/null && print_fail 'assert_false true DID NOT fail'
+#    assert_false [ 3 -eq 3 ] 1> /dev/null && print_fail 'assert_false [ 3 -eq 3 ] DID NOT fail'
+#    assert_false [ asd = asd ] 1> /dev/null && print_fail 'assert_false [ asd = asd ] DID NOT fail'
+#}
+
+test_assert_false__negative_case_1() {
+    assert_false true 1> /dev/null && print_fail 'assert_false true DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_false__negative_case_2() {
+    assert_false [ 3 -eq 3 ] 1> /dev/null && print_fail 'assert_false [ 3 -eq 3 ] DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_false__negative_case_3() {
+    assert_false [ asd = asd ] 1> /dev/null && print_fail 'assert_false [ asd = asd ] DID NOT fail' || _curr_test_rc_=0
 }
 
 test_assert_false__special_case() {
@@ -122,12 +207,34 @@ test_assert_rc_equal__positive() {
     assert_rc_equal 5 return 5
     assert_rc_equal 127 return 127
 }
-test_assert_rc_equal__negative() {
-    assert_rc_equal 1 false 1> /dev/null && print_fail 'assert_rc_equal 1 false DID NOT fail'
-    assert_rc_equal 0 true 1> /dev/null && print_fail 'assert_rc_equal 0 true DID NOT fail'
-    assert_rc_equal 5 return 6 1> /dev/null && print_fail 'assert_rc_equal 5 return 6 DID NOT fail'
-    assert_rc_equal 127 return 126 1> /dev/null && print_fail 'assert_rc_equal 127 return 126 DID NOT fail'
-    assert_rc_equal abs return 0 && print_fail 'assert_rc_equal abs return 0 DID NOT fail'
+
+# TODO: Document expected failure individual test cases
+#test_assert_rc_equal__negative() {
+#    assert_rc_equal 1 false 1> /dev/null && print_fail 'assert_rc_equal 1 false DID NOT fail'
+#    assert_rc_equal 0 true 1> /dev/null && print_fail 'assert_rc_equal 0 true DID NOT fail'
+#    assert_rc_equal 5 return 6 1> /dev/null && print_fail 'assert_rc_equal 5 return 6 DID NOT fail'
+#    assert_rc_equal 127 return 126 1> /dev/null && print_fail 'assert_rc_equal 127 return 126 DID NOT fail'
+#    assert_rc_equal abs return 0 && print_fail 'assert_rc_equal abs return 0 DID NOT fail'
+#}
+
+test_assert_rc_equal__negative_case_1() {
+    assert_rc_equal 1 false 1> /dev/null && print_fail 'assert_rc_equal 1 false DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_rc_equal__negative_case_2() {
+    assert_rc_equal 0 true 1> /dev/null && print_fail 'assert_rc_equal 0 true DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_rc_equal__negative_case_3() {
+    assert_rc_equal 5 return 6 1> /dev/null && print_fail 'assert_rc_equal 5 return 6 DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_rc_equal__negative_case_4() {
+    assert_rc_equal 127 return 126 1> /dev/null && print_fail 'assert_rc_equal 127 return 126 DID NOT fail' || _curr_test_rc_=0
+}
+
+test_assert_rc_equal__negative_case_5() {
+    assert_rc_equal abs return 0 2> /dev/null && print_fail 'assert_rc_equal abs return 0 DID NOT fail' || _curr_test_rc_=0
 }
 
 test_assert_rc_equal__special_case() {
@@ -136,39 +243,3 @@ test_assert_rc_equal__special_case() {
     }
     assert_rc_equal 0 accepts_complex_string 'abc def'
 }
-
-# # shellcheck disable=2003,2086
-# test() {
-#     set +x
-#     local no=0
-
-#     test_is_num__true
-#     test_is_num__false
-#     test_assert_equal__positive
-#     test_assert_equal__negative
-#     test_assert_not_equal__positive
-#     test_assert_not_equal__negative
-#     test_assert_equal_num__positive
-#     test_assert_equal_num__negative
-#     test_assert_not_equal_num__positive
-#     test_assert_not_equal_num__negative
-#     test_assert_true__positive
-#     test_assert_true__negative
-#     test_assert_true__special_case
-#     test_assert_false__positive
-#     test_assert_false__negative
-#     test_assert_false__special_case
-#     test_assert_rc_equal__positive
-#     test_assert_rc_equal__negative
-#     test_assert_rc_equal__special_case
-# }
-
-# if [ "$_name_" = "$_l4t_name_" ]; then
-#     if [ "$1" = test ]; then
-#         test
-#     else
-#         echo "$_l4t_name_ is a library - not callable directly."
-#         echo "If you want to run the tests -- use 'test' argument."
-#         exit 1
-#     fi
-# fi

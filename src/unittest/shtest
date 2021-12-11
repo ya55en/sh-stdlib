@@ -13,9 +13,11 @@ import string
 _sht_name_='shtest'
 
 # shellcheck disable=2120
+
 print_pass() {
-    passmsg="${1:-passed}"
-    printf 'ok %u - %s: %s\n' $no $_curr_test_ "${C_OK}${passmsg}${C_OFF}"
+    passmsg="${1:-pass}"
+    # printf 'ok %u - %s: %s\n' $no $_curr_test_ "${C_OK}${passmsg}${C_OFF}"
+    echo "ok $no - $_curr_test_: ${C_OK}${passmsg}${C_OFF}"
 }
 
 parse_module() {
@@ -98,12 +100,9 @@ run() {
         no=$(expr $no + 1)
 
         $method
-
         if [ "$_curr_test_rc_" -eq 0 ]; then
             print_pass
         else
-            # YD: attempt to count the failed tests and finally
-            # return false if non-zero -- does NOT work (yet).
             failed_tests=$(( $failed_tests + 1))
         fi
 
@@ -114,10 +113,45 @@ run() {
     [ -n "$teardown_mod_name" ] && $teardown_mod_name
 }
 
+print_plan() {
+    local setup_mod_name=
+    local teardown_mod_name=
+    local setup_name=
+    local teardown_name=
+    local test_methods
+
+    local _number_of_tests=0
+    local _test_modules_copy="$test_modules"
+
+    local IFS_OLD="$IFS"
+    while [ -n "$_test_modules_copy" ]; do
+
+        IFS=':'
+        read -r mod_path _test_modules_copy << EOS
+$_test_modules_copy
+EOS
+
+        [ -n "$mod_path" ] && {
+            _debug "RUNNING module [$mod_path]"
+
+            test_methods=
+            parse_module "$mod_path"
+            IFS=' '
+            for method in $test_methods; do
+                _number_of_tests=$(( _number_of_tests + 1))
+            done
+        }
+    done
+    IFS="$IFS_OLD"
+    echo "1..$_number_of_tests"
+}
+
 run_many() {
-    local no=0
     local IFS_OLD="$IFS"
     IFS=':'
+    local no=0
+
+    print_plan
 
     while [ -n "$test_modules" ]; do
 
@@ -264,8 +298,7 @@ EOS
     local test_modules
     collect "$modules"
     run_many
-    # failed_tests NOT (yet) used -- see comment in run()
-    # return "$failed_tests"
+    return $failed_tests
 }
 
 _debug "_name_=[$_name_]  _sht_name_=[$_sht_name_]"
