@@ -24,11 +24,11 @@ is_num() {
 #    passmsg="${1:-passed}"
 #    printf 'ok %u - %s: %s\n' $no $_curr_test_ "$passmsg"
 #}
-print_pass() {
-    passmsg="${1:-pass}"
-    # printf 'ok %u - %s: %s\n' $no $_curr_test_ "${C_OK}${passmsg}${C_OFF}"
-    echo "ok $no - $_curr_test_: ${C_OK}${passmsg}${C_OFF}"
-}
+#print_pass() {
+#    passmsg="${1:-pass}"
+#    # printf 'ok %u - %s: %s\n' $no $_curr_test_ "${C_OK}${passmsg}${C_OFF}"
+#    echo "ok $no - $_curr_test_: ${C_OK}${passmsg}${C_OFF}"
+#}
 
 print_fail() {
     failmsg="$1"
