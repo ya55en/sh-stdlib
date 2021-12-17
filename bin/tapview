@@ -161,7 +161,7 @@ done
 if [ -z "$expect" ]
 then
     ship_line "Missing a plan."
-    # status=1  # YD: patched here
+    status=1
 elif [ "$test_before_plan" = "yes" ] && [ "$test_after_plan" = "yes" ] 
 then
     ship_line "A plan line may only be placed before or after all tests."

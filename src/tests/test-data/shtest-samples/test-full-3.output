@@ -1,3 +1,4 @@
+1..6
 ok 1 - test_pass: pass
 not ok 2 - test_fail: assert_true FAILED for [false]
 ok 3 - test_pass: pass

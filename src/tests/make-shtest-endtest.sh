@@ -113,10 +113,11 @@ setup_mod() {
 
 teardown_mod() {
     TERM="$old_term"
-    rm -f "$_OUTPUT_TMP_FILE"
+    # rm -f "$_OUTPUT_TMP_FILE"
 }
 
 main() {
+    echo '1..5'
     setup_mod
     test_parse_module_1
     test_parse_module_2
