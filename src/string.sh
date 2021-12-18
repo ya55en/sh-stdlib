@@ -126,3 +126,11 @@ $multiple_values
 EOS
     IFS="$IFS_SAVED"
 }
+
+capitalize() {
+    #: Echo back a capitalized version of given word.
+    # (based on https://stackoverflow.com/questions/12487424)
+
+    word="$1"
+    echo "$word" | sed 's/.*/\u&/'
+}

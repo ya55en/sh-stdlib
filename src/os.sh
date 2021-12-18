@@ -41,5 +41,27 @@ _os__get_arch_short() {
     fi
 }
 
+into_dir_do() {
+    #: Save current working dir (cwd), then `cd` to given dir and execute
+    #: the script, then `cd` back to the original dir.
+
+    dir="$1" script="$2"
+
+    [ -z "${script}" ] && die 42 "into_dir_do() called with empty script: [$script]"
+
+    cwd="$(pwd)"
+    rc=0
+    cd "$dir" || {
+        _error "cd into $dir FAILED"
+        return $?
+    }
+    eval "$script" || {
+        _error "into_dir_do(): eval FAILED: script=[$script]"
+        return $?
+    }
+    _debug "into_dir_do(): eval rc=$?"
+    cd "$cwd" || return 0
+}
+
 [ -z "$_OS_ARCH" ] && _os__set_vars
 [ -z "$_OS_ARCH_SHORT" ] && _OS_ARCH_SHORT="$(_os__get_arch_short)"
