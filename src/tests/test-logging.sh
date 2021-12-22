@@ -20,7 +20,7 @@
 import unittest/assert
 import logging
 
-__LOGGING__SAMPLE_FILE='src/tests/test-data/logging-sample.output'
+__LOGGING__SAMPLE_FILE="$POSIXSH_STDLIB_HOME/tests/test-data/logging-sample.output"
 __LOGGING__TMP_FILE='/tmp/logging-test.output'
 
 show_aliases() {
