@@ -242,7 +242,7 @@ main() {
     case "$1" in
     --help | -help | help | -h)
         cat << EOS
-Unit test runner v 0.0.2 ;)
+Unit test runner
 USAGE:
   $ $(basename "$0") TEST-MODULE [TEST-MODULE ...] [-t TEST-CASE] [--with-samples]
 
@@ -255,7 +255,7 @@ EOS
             cat "$POSIXSH_STDLIB_HOME"/version
         else
             cat << EOS #TODO: Update this
-Unit test runner v 0.0.0 (This is a fake version string)
+Unit test runner (version file missing!)
 EOS
         fi
         exit 0
