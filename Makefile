@@ -29,7 +29,7 @@ dist:  $(DISTFILE)
 
 
 clean-dist:
-	rm -r ./dist
+	rm -rf ./dist
 
 
 clean-all:  clean-dist

@@ -16,7 +16,7 @@ _os__set_vars() {
 
     # shellcheck disable=2034
     read -r _OS_KERNEL_NAME _OS_ARCH _OS_OS << EOS
-$(uname -spo)
+$(uname -smo)
 EOS
 
     IFS="$IFS_SAVED"

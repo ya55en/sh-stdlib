@@ -1,15 +1,7 @@
 
-	@[ -n "$(_version_)" ] || { echo 'FATAL: version _version_ NOT found in git _version_ log'; exit 11; }
-	@echo $(_version_) > ./src/version
-	@[ -d ./dist/ ] || mkdir -p ./dist
-	@rm -f $(DISTFILE)
-	@tar czvf $(DISTFILE) -C src --exclude=$(EXCLUDED) --exclude='*/bin/*' .
-	@echo "Created $(DISTFILE)."
-
-
 TODO:
-
 - Measure (and improve) test coverage
+- Provide `test` target for `make`
 
 
 DONE:
@@ -30,3 +22,11 @@ NOTES:
 ~/Work/posix-sh/ <-- eval `make setenv`
 ~/Work/mashmallow-0/ <-- eval `make setenv`
 ~/Work/chroot-setup/ <-- eval `make setenv`
+
+
+	@[ -n "$(_version_)" ] || { echo 'FATAL: version _version_ NOT found in git _version_ log'; exit 11; }
+	@echo $(_version_) > ./src/version
+	@[ -d ./dist/ ] || mkdir -p ./dist
+	@rm -f $(DISTFILE)
+	@tar czvf $(DISTFILE) -C src --exclude=$(EXCLUDED) --exclude='*/bin/*' .
+	@echo "Created $(DISTFILE)."

@@ -8,7 +8,7 @@ test_os_vars() {
     local expected_os
     local expected_kernel_name
 
-    expected_arch="$(uname -p)"
+    expected_arch="$(uname -m)"
     expected_os="$(uname -o)"
     expected_kernel_name="$(uname -s)"
 
