@@ -104,6 +104,39 @@ test_contains__corner_cases() {
     assert_false contains '' 'abc'
 }
 
+test_capitalize_lower_input() {
+    assert_equal 'Abcdef' "$(capitalize 'abcdef')"
+}
+
+# capitalize does NOT work for uppercase imput; suppressed.
+__test_capitalize_uppper_input() {
+    assert_equal 'Abcdef' "$(capitalize 'ABCDEF')"
+}
+
+test_upper_alphanum_input() {
+    assert_equal 'ABC123DEF' "$(upper 'abc123def')"
+    assert_equal 'ABC123DEF' "$(upper 'Abc123Def')"
+    assert_equal 'ABC123DEF' "$(upper 'ABC123DEF')"
+}
+
+test_upper_peculiar_input() {
+    assert_equal '' "$(upper '')"
+    assert_equal ' ' "$(upper ' ')"
+    assert_equal '!@#$%^&*()<>' "$(upper '!@#$%^&*()<>')"
+}
+
+test_lower_alphanum_input() {
+    assert_equal 'abc123def' "$(lower 'ABC123DEF')"
+    assert_equal 'abc123def' "$(lower 'Abc123Def')"
+    assert_equal 'abc123def' "$(lower 'ABC123DEF')"
+}
+
+test_lower_peculiar_input() {
+    assert_equal '' "$(lower '')"
+    assert_equal ' ' "$(lower ' ')"
+    assert_equal '!@#$%^&*()<>' "$(lower '!@#$%^&*()<>')"
+}
+
 test_assing_multiple__default_delim_two_vars() {
     assert_true assing_multiple 'value_1 value_2' var1 var2
     assert_equal "$var1" 'value_1'

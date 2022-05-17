@@ -104,6 +104,23 @@ contains() {
 #     esac
 # }
 
+capitalize() {
+    #: Echo back a capitalized version of given word.
+    # (based on https://stackoverflow.com/questions/12487424)
+    # BAD: Works only for lowercase input!
+    # TODO: Provide a better implementation
+
+    echo "$1" | sed 's/.*/\u&/'
+}
+
+upper() {
+    echo -n "$1" | tr '[:lower:]' '[:upper:]'
+}
+
+lower() {
+    echo -n "$1" | tr '[:upper:]' '[:lower:]'
+}
+
 #: Assign multiple space-delimited values of "$1" to multiple variables
 #: given as the remaining arguments. Example:
 #:   assing_multiple "ONE TWO THREE" one two three
@@ -125,12 +142,4 @@ assing_multiple() {
 $multiple_values
 EOS
     IFS="$IFS_SAVED"
-}
-
-capitalize() {
-    #: Echo back a capitalized version of given word.
-    # (based on https://stackoverflow.com/questions/12487424)
-
-    word="$1"
-    echo "$word" | sed 's/.*/\u&/'
 }
