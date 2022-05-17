@@ -108,7 +108,7 @@ test_capitalize_lower_input() {
     assert_equal 'Abcdef' "$(capitalize 'abcdef')"
 }
 
-# capitalize does NOT work for uppercase imput; suppressed.
+# `capitalize` does NOT work for uppercase input; suppressed.
 __test_capitalize_uppper_input() {
     assert_equal 'Abcdef' "$(capitalize 'ABCDEF')"
 }
@@ -137,20 +137,20 @@ test_lower_peculiar_input() {
     assert_equal '!@#$%^&*()<>' "$(lower '!@#$%^&*()<>')"
 }
 
-test_assing_multiple__default_delim_two_vars() {
-    assert_true assing_multiple 'value_1 value_2' var1 var2
+test_assign_multiple__default_delim_two_vars() {
+    assert_true assign_multiple 'value_1 value_2' var1 var2
     assert_equal "$var1" 'value_1'
     assert_equal "$var2" 'value_2'
 }
 
-test_assing_multiple__default_delim_two_values_three_vars() {
-    assert_true assing_multiple 'value_1 value_2' var1 var2 var3
+test_assign_multiple__default_delim_two_values_three_vars() {
+    assert_true assign_multiple 'value_1 value_2' var1 var2 var3
     assert_equal "$var1" 'value_1'
     assert_equal "$var2" 'value_2'
     assert_equal "$var3" ''
 }
 
-test_assing_multiple__default_delim_two_values_one_var() {
-    assert_true assing_multiple 'value_1 value_2' var1
+test_assign_multiple__default_delim_two_values_one_var() {
+    assert_true assign_multiple 'value_1 value_2' var1
     assert_equal "$var1" 'value_1 value_2'
 }

@@ -123,10 +123,10 @@ lower() {
 
 #: Assign multiple space-delimited values of "$1" to multiple variables
 #: given as the remaining arguments. Example:
-#:   assing_multiple "ONE TWO THREE" one two three
+#:   assign_multiple "ONE TWO THREE" one two three
 #: We do not support custom delims, because IFS change affects
 #: the way the list of variables is interpreted.
-assing_multiple() {
+assign_multiple() {
     # IMPORTANT: IFS *must* be set *first* as it affects $* and $@!
     local multiple_values
     local varnames
