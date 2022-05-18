@@ -6,20 +6,26 @@ _OS_ARCH=
 _OS_ARCH_SHORT=
 _OS_OS=
 _OS_KERNEL_NAME=
+_OS_CPU_COUNT=
+_OS_MEM_TOTAL=
 
 # TODO: we might need kernel version and/or release variables
 
+# shellcheck disable=2034
 #: Set global processor/machine architecture related variables.
 _os__set_vars() {
     IFS_SAVED="$IFS"
     IFS=' '
 
-    # shellcheck disable=2034
     read -r _OS_KERNEL_NAME _OS_ARCH _OS_OS << EOS
 $(uname -smo)
 EOS
 
     IFS="$IFS_SAVED"
+
+    # Additional useful stuff
+    _OS_CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
+    _OS_MEM_TOTAL=$(free -m | awk '/Mem:/ {print $2}')
 }
 
 # shellcheck disable=2120
