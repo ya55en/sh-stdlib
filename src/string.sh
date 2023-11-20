@@ -121,6 +121,20 @@ lower() {
     echo -n "$1" | tr '[:upper:]' '[:lower:]'
 }
 
+starts_with() {
+  local haystack="$1"
+  local needle="$2"
+
+  # Handle edge case when $needle is empty
+  [ -z "$needle" ] && return 0
+
+  # Handle edge case when $haystack is empty
+  [ -z "$haystack" ] && return 1
+
+  # Regular cases:
+  ! [ "${haystack}" = "${haystack#${needle}}" ]
+}
+
 #: Assign multiple space-delimited values of "$1" to multiple variables
 #: given as the remaining arguments. Example:
 #:   assign_multiple "ONE TWO THREE" one two three

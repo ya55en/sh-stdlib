@@ -154,3 +154,19 @@ test_assign_multiple__default_delim_two_values_one_var() {
     assert_true assign_multiple 'value_1 value_2' var1
     assert_equal "$var1" 'value_1 value_2'
 }
+
+test_starts_with__standard_cases() {
+    assert_true starts_with onetwo one
+    assert_true starts_with onet one
+    assert_true starts_with one one
+    assert_false starts_with one onet
+    assert_false starts_with one two
+    assert_false starts_with onetwo two
+}
+
+test_starts_with__edge_cases() {
+    assert_true starts_with o o
+    assert_true starts_with o ''
+    assert_true starts_with '' ''
+    assert_false starts_with '' o
+}

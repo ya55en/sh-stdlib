@@ -20,7 +20,9 @@ test_os_vars() {
     assert_equal "$expected_os" "$_OS_OS"
     assert_equal "$expected_kernel_name" "$_OS_KERNEL_NAME"
     assert_equal "$expected_cpu_count" "$_OS_CPU_COUNT"
-    assert_equal "$expected_mem_total" "$_OS_MEM_TOTAL"
+    # Sometimes `expected_mem_total` and `_OS_MEM_TOTAL` differ by 1
+    # due to rounding, so we take this in account:
+    assert_true [ $((expected_mem_total - _OS_MEM_TOTAL)) -le 1 ]
 }
 
 test_set_arch_short() {

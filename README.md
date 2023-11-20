@@ -55,6 +55,23 @@ $ which shtest
 /home/{USER}/{WorkDir}/sh-stdlib/src/bin/shtest
 ```
 
+### Run tests
+
+```bash
+$ shtest src/tests/ | bin/tapview
+```
+
+Or, if detailed report is desired, just:
+
+```bash
+$ shtest src/tests/
+```
+
+Individual suites can also be run, like:
+
+```bash
+$ shtest src/tests/test-string.sh | bin/tapview
+```
 
 ### Create a dist file
 

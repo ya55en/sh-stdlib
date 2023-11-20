@@ -242,9 +242,9 @@ main() {
     case "$1" in
     --help | -help | help | -h)
         cat << EOS
-Unit test runner
+shtest: sh-stdlib unit test runner
 USAGE:
-  $ $(basename "$0") TEST-MODULE [TEST-MODULE ...] [-t TEST-CASE] [--with-samples]
+  \$ $(basename "$0") TEST-MODULE [TEST-MODULE ...] [-t TEST-CASE] [--with-samples]
 
 EOS
         exit 0
@@ -255,7 +255,7 @@ EOS
             cat "$POSIXSH_STDLIB_HOME"/version
         else
             cat << EOS #TODO: Update this
-Unit test runner (version file missing!)
+shtest: sh-stdlib unit test runner (version file missing!)
 EOS
         fi
         exit 0
